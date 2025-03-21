@@ -25,6 +25,7 @@
       padding: 1em 0;
       text-align: center;
       position: relative;
+      transition: background 0.3s;
     }
     header h1 {
       margin: 0;
@@ -146,6 +147,19 @@
       cursor: pointer;
       font-weight: bold;
       color: #333;
+      transition: background 0.3s;
+    }
+    /* Dark Mode стили */
+    .dark-mode {
+      background-color: #222;
+      color: #eee;
+    }
+    .dark-mode header, .dark-mode footer {
+      background: linear-gradient(135deg, #444, #111);
+      color: #eee;
+    }
+    .dark-mode a {
+      color: #66ccff;
     }
     /* Media Queries */
     @media (min-width: 1024px) {
@@ -239,8 +253,7 @@
       </p>
       <button id="showCodeBtn">Показать исходный код бота</button>
       <div id="codeBlock">
-        <pre><code>import os
-import logging
+        <pre><code>import logging
 from aiogram import Bot, Dispatcher, types
 from aiogram.filters import Command
 import tensorflow as tf
@@ -502,20 +515,13 @@ if __name__ == "__main__":
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
     
-    // Переключение темы
+    // Переключение темы через класс dark-mode
     const themeToggle = document.getElementById('themeToggle');
     let darkMode = false;
     themeToggle.addEventListener('click', () => {
       darkMode = !darkMode;
-      if (darkMode) {
-        document.body.style.backgroundColor = '#222';
-        document.body.style.color = '#eee';
-        themeToggle.textContent = 'Светлая тема';
-      } else {
-        document.body.style.backgroundColor = '#f4f4f4';
-        document.body.style.color = '#333';
-        themeToggle.textContent = 'Темная тема';
-      }
+      document.body.classList.toggle('dark-mode', darkMode);
+      themeToggle.textContent = darkMode ? 'Светлая тема' : 'Темная тема';
     });
   </script>
 </body>

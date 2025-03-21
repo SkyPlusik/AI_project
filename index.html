@@ -5,43 +5,81 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Проект: Telegram бот для определения породы собаки</title>
   <style>
-    /* Базовые стили */
+    /* Основные стили и анимации */
+    * {
+      box-sizing: border-box;
+    }
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       margin: 0;
       padding: 0;
       line-height: 1.6;
       background-color: #f4f4f4;
       color: #333;
+      transition: background-color 0.3s, color 0.3s;
+      scroll-behavior: smooth;
     }
     header, footer {
-      background: #333;
+      background: linear-gradient(135deg, #0066cc, #003366);
       color: #fff;
       padding: 1em 0;
       text-align: center;
+      position: relative;
     }
     header h1 {
       margin: 0;
+      font-size: 2rem;
+      opacity: 0;
+      animation: fadeIn 1s forwards 0.3s;
+    }
+    nav {
+      margin-top: 1em;
+    }
+    nav a {
+      color: #fff;
+      margin: 0 10px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: color 0.3s;
+    }
+    nav a:hover {
+      color: #ffcc00;
     }
     main {
       padding: 1em;
+      opacity: 0;
+      animation: fadeIn 1s forwards 0.6s;
     }
     section {
       margin-bottom: 2em;
       background: #fff;
-      padding: 1em;
-      border-radius: 5px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      padding: 1.5em;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      opacity: 0;
+      transform: translateY(20px);
+      animation: slideIn 0.8s forwards;
     }
+    section:nth-child(odd) {
+      animation-delay: 0.3s;
+    }
+    section:nth-child(even) {
+      animation-delay: 0.5s;
+    }
+    .features {
+      list-style-type: disc;
+      padding-left: 20px;
+    }
+    /* Команда разработчиков */
     .team {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
+      gap: 1em;
     }
     .member {
-      margin: 1em;
       text-align: center;
-      transition: transform 0.3s ease;
+      transition: transform 0.3s;
     }
     .member:hover {
       transform: scale(1.05);
@@ -50,37 +88,23 @@
       width: 200px;
       height: auto;
       border-radius: 50%;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
     }
-    /* Список, пример использования семантического тега */
-    .features {
-      list-style-type: disc;
-      padding-left: 20px;
-    }
-    /* Анимация для ссылок */
-    a {
-      color: #0088cc;
-      text-decoration: none;
-      transition: color 0.3s ease;
-    }
-    a:hover {
-      color: #005577;
-    }
-    /* Кнопка для показа исходного кода бота */
+    /* Кнопка показа кода */
     #showCodeBtn {
       display: inline-block;
       margin-top: 1em;
-      padding: 0.5em 1em;
+      padding: 0.6em 1.2em;
       background: #0088cc;
       color: #fff;
       border: none;
-      border-radius: 3px;
+      border-radius: 4px;
       cursor: pointer;
-      transition: background 0.3s ease;
+      transition: background 0.3s;
     }
     #showCodeBtn:hover {
       background: #005577;
     }
-    /* Блок для отображения кода (по умолчанию скрыт) */
     #codeBlock {
       display: none;
       margin-top: 1em;
@@ -92,78 +116,123 @@
       white-space: pre-wrap;
       overflow-x: auto;
     }
-    /* Desktop версия (ширина экрана ≥ 1024px) */
+    /* Кнопка "Наверх" */
+    #backToTop {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: #0088cc;
+      color: #fff;
+      border: none;
+      padding: 0.7em;
+      border-radius: 50%;
+      cursor: pointer;
+      display: none;
+      transition: opacity 0.3s;
+      font-size: 1.2rem;
+    }
+    #backToTop:hover {
+      background: #005577;
+    }
+    /* Переключение темы */
+    #themeToggle {
+      position: absolute;
+      top: 10px;
+      right: 20px;
+      background: #ffcc00;
+      border: none;
+      padding: 0.5em;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+      color: #333;
+    }
+    /* Media Queries */
     @media (min-width: 1024px) {
       .team {
         flex-wrap: nowrap;
       }
-      .member {
-        margin: 1em;
-      }
     }
-    /* Мобильная версия (ширина экрана ≤ 768px) */
     @media (max-width: 768px) {
       header, footer {
-        padding: 0.5em;
+        padding: 0.8em;
       }
       .member img {
         width: 150px;
       }
     }
+    /* Анимации */
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+    @keyframes slideIn {
+      to { opacity: 1; transform: translateY(0); }
+    }
   </style>
 </head>
 <body>
   <header>
+    <button id="themeToggle">Темная тема</button>
     <h1>Проект: Telegram бот для определения породы собаки</h1>
+    <nav>
+      <a href="#about">О проекте</a>
+      <a href="#model">О модели</a>
+      <a href="#team">Команда</a>
+      <a href="#code">Код бота</a>
+    </nav>
   </header>
   
   <main>
-  <section>
-    <h2>Описание проекта</h2>
-    <p>Наш проект представляет собой Telegram бота, способного распознавать породу собаки по присланной фотографии с помощью искусственного интеллекта. Основой для распознавания послужила модель, разработанная на базе TensorFlow, которая обучалась на обширном датасете <a href="http://vision.stanford.edu/aditya86/ImageNetDogs/" target="_blank">Stanford Dogs Dataset</a>. Данный датасет включает тысячи изображений более чем 120 пород собак, что позволяет модели точно различать даже схожие породы.</p>
+    <section id="about">
+      <h2>Описание проекта</h2>
+      <p>Наш проект представляет собой Telegram бота, способного распознавать породу собаки по присланной фотографии с помощью искусственного интеллекта. Модель, разработанная на базе TensorFlow, обучалась на обширном датасете <a href="http://vision.stanford.edu/aditya86/ImageNetDogs/" target="_blank">Stanford Dogs Dataset</a>, который включает тысячи изображений более чем 120 пород собак. Это позволяет боту точно определять даже схожие породы, предоставляя пользователю топ-3 наиболее вероятных вариантов с краткой информацией о каждой породе.</p>
+      
+      <p><strong>Особенности проекта:</strong></p>
+      <ul class="features">
+        <li>Высокая точность распознавания благодаря использованию современных архитектур нейронных сетей.</li>
+        <li>Быстрый ответ в реальном времени прямо в чате Telegram.</li>
+        <li>Интерактивность: бот предоставляет не только результаты, но и справочную информацию о породах.</li>
+        <li>Гибкость: возможность дальнейшего расширения функционала и интеграции с новыми технологиями.</li>
+      </ul>
+      
+      <p>Проект демонстрирует, как современные технологии машинного обучения могут быть интегрированы в популярные мессенджеры для создания полезных сервисов, позволяющих пользователям быстро получать точные результаты.</p>
+    </section>
     
-    <p>Особенности нашего проекта:</p>
-    <ul class="features">
-      <li><strong>Высокая точность распознавания:</strong> Благодаря использованию современных архитектур нейронных сетей и тщательной предобработке изображений, бот способен определить топ-3 наиболее вероятные породы с указанием уровня уверенности.</li>
-      <li><strong>Реальное время:</strong> Пользователи получают быстрый ответ прямо в чате Telegram, что делает использование бота удобным для повседневного применения.</li>
-      <li><strong>Интерактивность:</strong> Бот не только предоставляет результат распознавания, но и сопровождает его краткими справками о породах, что помогает лучше понять характеристики каждой собаки.</li>
-      <li><strong>Использование современных технологий:</strong> В основе проекта лежит платформа TensorFlow, которая позволяет эффективно обучать и использовать нейронные сети для задач компьютерного зрения. Модель оптимизирована для работы на стандартных устройствах, что обеспечивает её оперативность и стабильность.</li>
-      <li><strong>Гибкость и масштабируемость:</strong> Архитектура бота легко расширяется, что позволяет добавлять новые функции, такие как интеграция с дополнительными API, улучшенная обработка изображений или обновление датасетов для повышения точности.</li>
-    </ul>
+    <section id="model">
+      <h2>Подробнее о модели TensorFlow</h2>
+      <p>Модель загружается из файла <code>dog_breed_model.h5</code> и ожидает изображения размером <code>224x224</code> пикселей. Для корректной работы проводится стандартная предобработка: изменение размера, преобразование в массив и нормализация пикселей. Обучение модели проводилось на основе Stanford Dogs Dataset, содержащего разнообразные изображения различных пород, что позволяет добиться высокой точности распознавания.</p>
+      <p>Основные преимущества модели:</p>
+      <ul class="features">
+        <li><strong>Современные архитектуры:</strong> Использование последних достижений в области компьютерного зрения.</li>
+        <li><strong>Оптимизация под мобильные устройства:</strong> Модель адаптирована для быстрого вывода результатов на стандартных устройствах.</li>
+        <li><strong>Аугментация данных:</strong> Применение методов аугментации для повышения устойчивости к различным условиям съемки.</li>
+      </ul>
+      <p>Таким образом, бот обеспечивает высокую точность и оперативность в определении породы собаки, делая сервис удобным и информативным.</p>
+    </section>
     
-    <p>В целом, наш Telegram бот демонстрирует, как современные технологии машинного обучения могут быть интегрированы в мессенджеры для создания полезных и интерактивных сервисов. Проект стал отличной возможностью для команды изучить и применить передовые технологии, а также поделиться своими знаниями с пользователями.</p>
-  </section>
-
-  <section>
-    <h2>Подробнее о модели TensorFlow</h2>
-    <p>Модель загружается из файла <code>dog_breed_model.h5</code> и ожидает изображения размером <code>224x224</code> пикселей. Для предобработки изображений используется стандартное масштабирование и нормализация, что позволяет модели корректно работать с любыми фотографиями собак.</p>
-    <p>Обучение модели проводилось на датасете, содержащем множество изображений различных пород собак, что позволило достичь высокой точности в распознавании. Модель реализована с помощью API <code>tf.keras</code> и оптимизирована для быстрого и точного вывода результатов. В процессе обучения использовались современные методы регуляризации и аугментации данных для повышения обобщающей способности модели.</p>
-    <p>Использование этой модели в Telegram боте позволяет в реальном времени определять топ-3 наиболее вероятных породы с соответствующими справками.</p>
-  </section>
-
-    <section>
+    <section id="team">
       <h2>Команда разработчиков</h2>
       <div class="team">
         <article class="member">
-          <img src="strrezhnev.jpg" alt="Стрежнев Александр Дмитриевич">
+          <img src="images/strrezhnev.jpg" alt="Стрежнев Александр Дмитриевич">
           <h3>Стрежнев Александр Дмитриевич</h3>
         </article>
         <article class="member">
-          <img src="popkov.jpg" alt="Попков Леонид Николаевич">
+          <img src="images/popkov.jpg" alt="Попков Леонид Николаевич">
           <h3>Попков Леонид Николаевич</h3>
         </article>
         <article class="member">
-          <img src="torunov.jpg" alt="Торунов Иван Дмитриевич">
+          <img src="images/torunov.jpg" alt="Торунов Иван Дмитриевич">
           <h3>Торунов Иван Дмитриевич</h3>
         </article>
         <article class="member">
-          <img src="turovsky.jpg" alt="Туровский Николай Игоревич">
+          <img src="images/turovsky.jpg" alt="Туровский Николай Игоревич">
           <h3>Туровский Николай Игоревич</h3>
         </article>
       </div>
     </section>
-
-    <section>
+    
+    <section id="code">
       <h2>Исходный код бота</h2>
       <p>Ниже представлен исходный код бота, а также ссылка на него: 
          <a href="https://web.telegram.org/a/#7492687067" target="_blank">Telegram Web</a> или @dogsaichatbot.
@@ -398,15 +467,18 @@ if __name__ == "__main__":
       </div>
     </section>
   </main>
-
+  
   <footer>
     <p>Размещено на GitHub Pages: <a href="https://ваш_проект.github.io" target="_blank">Ссылка на проект</a></p>
   </footer>
-
+  
+  <!-- Кнопка "Наверх" -->
+  <button id="backToTop" title="Наверх">&#8679;</button>
+  
   <script>
+    // Показ/скрытие блока с кодом
     const showCodeBtn = document.getElementById('showCodeBtn');
     const codeBlock = document.getElementById('codeBlock');
-
     showCodeBtn.addEventListener('click', () => {
       if (codeBlock.style.display === 'none' || codeBlock.style.display === '') {
         codeBlock.style.display = 'block';
@@ -414,6 +486,35 @@ if __name__ == "__main__":
       } else {
         codeBlock.style.display = 'none';
         showCodeBtn.textContent = 'Показать исходный код бота';
+      }
+    });
+    
+    // Плавное появление кнопки "Наверх"
+    const backToTop = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+        backToTop.style.display = 'block';
+      } else {
+        backToTop.style.display = 'none';
+      }
+    });
+    backToTop.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+    
+    // Переключение темы
+    const themeToggle = document.getElementById('themeToggle');
+    let darkMode = false;
+    themeToggle.addEventListener('click', () => {
+      darkMode = !darkMode;
+      if (darkMode) {
+        document.body.style.backgroundColor = '#222';
+        document.body.style.color = '#eee';
+        themeToggle.textContent = 'Светлая тема';
+      } else {
+        document.body.style.backgroundColor = '#f4f4f4';
+        document.body.style.color = '#333';
+        themeToggle.textContent = 'Темная тема';
       }
     });
   </script>
